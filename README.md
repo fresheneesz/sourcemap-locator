@@ -67,7 +67,8 @@ How to submit pull requests:
 3. clone your forked repo onto your machine and run `npm install` at its root
 4. If you're gonna work on multiple separate things, its best to create a separate branch for each of them
 5. edit!
-6. If it's a code change, please add to the unit tests (at test/tests.js) to verify that your change works
+6. If it's a code change, please add to the unit tests (in the 'test/' folder) to verify that your change works
+  * Browser tests need to have the test package built and test server running - run test/buildAndServe.js to do this
 7. When you're done, run the unit tests and ensure they all pass
 8. Commit and push your changes
 9. Submit a pull request: https://help.github.com/articles/creating-a-pull-request
