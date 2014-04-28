@@ -26,15 +26,19 @@ var findSourcemap = require('sourcemap-locator') // use webpack (recommended) or
 ```
 
 These return the sourcemap URL, or undefined if it isn't found:
-`findSourcemap.fromUrl(originalSourceUrl)`
-`findSourcemap.fromSource(originalSourceText)` - works in node.js (the other ones don't)
+```javascript
+findSourcemap.fromUrl(originalSourceUrl)
+findSourcemap.fromSource(originalSourceText) // works in node.js (the other ones don't)
+```
 
 These return the text of the sourcemap file, or undefined if it isn't found:
-`findSourcemap.fromUrl(originalSourceUrl, true)`
-`findSourcemap.fromSource(originalSourceUrl, true)`
+```javascript
+findSourcemap.fromUrl(originalSourceUrl, true)
+findSourcemap.fromSource(originalSourceUrl, true)
+```
 
 These override cache maintainance functions if you have a separate cache of file sources
-```
+```javascript
 findSourcemap.cacheGet(function(url) {
    // get the url from your own cache
 })
