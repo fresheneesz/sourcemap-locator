@@ -67,9 +67,8 @@
   \*********************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var unit = __webpack_require__(/*! deadunit/deadunit.browser */ 7)
-	var getTests = __webpack_require__(/*! ./tests */ 30)
-	var ajax = __webpack_require__(/*! ../ajax */ 2)
+	var unit = __webpack_require__(/*! deadunit/deadunit.browser */ 11)
+	var getTests = __webpack_require__(/*! ./tests */ 34)
 	
 	unit.test(function() {
 	    this.count(4)
@@ -83,19 +82,19 @@
 	
 	function getFileContents(path) {
 	    if(path === "testResources/sourceFileHashSymbol.js") {
-	        return __webpack_require__(/*! raw!./testResources/sourceFileHashSymbol.js */ 22)
+	        return __webpack_require__(/*! raw!./testResources/sourceFileHashSymbol.js */ 26)
 	
 	    } else if(path === "testResources/sourceFileAtSymbol.js") {
-	        return __webpack_require__(/*! raw!./testResources/sourceFileAtSymbol.js */ 21)
+	        return __webpack_require__(/*! raw!./testResources/sourceFileAtSymbol.js */ 25)
 	
 	    } else if(path === "testResources/sourceFile_SourceMapHeader.js") {
-	        return __webpack_require__(/*! raw!./testResources/sourceFile_SourceMapHeader.js */ 23)
+	        return __webpack_require__(/*! raw!./testResources/sourceFile_SourceMapHeader.js */ 27)
 	
 	    } else if(path === "testResources/sourceFile_X-SourceMapHeader.js") {
-	        return __webpack_require__(/*! raw!./testResources/sourceFile_X-SourceMapHeader.js */ 24)
+	        return __webpack_require__(/*! raw!./testResources/sourceFile_X-SourceMapHeader.js */ 28)
 	
 	    } else if(path === "testResources/source.map.js") {
-	        return __webpack_require__(/*! raw!./testResources/source.map.js */ 20)
+	        return __webpack_require__(/*! raw!./testResources/source.map.js */ 24)
 	
 	    } else {
 	        throw new Error("Didnt expect you'd be needing "+path)
@@ -111,7 +110,7 @@
 
 	/* Copyright (c) 2013 Billy Tetrud - Free to use for any purpose: MIT License*/
 	
-	var trimArgs = __webpack_require__(/*! trimArguments */ 11)
+	var trimArgs = __webpack_require__(/*! trimArguments */ 15)
 	
 	
 	module.exports = Future
@@ -398,97 +397,6 @@
 
 /***/ },
 /* 2 */
-/*!******************!*\
-  !*** ../ajax.js ***!
-  \******************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Try XHR methods in order and store XHR factory.
-	 *
-	 * @return <Function> XHR function or equivalent
-	 */
-	var createXMLHTTPObject = function() {
-	    var xmlhttp, XMLHttpFactories = [
-	        function() {
-	            return new XMLHttpRequest()
-	        }, function() {
-	            return new ActiveXObject('Msxml2.XMLHTTP')
-	        }, function() {
-	            return new ActiveXObject('Msxml3.XMLHTTP')
-	        }, function() {
-	            return new ActiveXObject('Microsoft.XMLHTTP')
-	        }
-	    ];
-	    for (var i = 0; i < XMLHttpFactories.length; i++) {
-	        try {
-	            xmlhttp = XMLHttpFactories[i]()
-	            // Use memoization to cache the factory
-	            createXMLHTTPObject = XMLHttpFactories[i]
-	            return xmlhttp;
-	        } catch (e) {
-	        }
-	    }
-	}
-	
-	
-	var HEADER = "([^\\s]+): (.*)"
-	
-	/**
-	 * @return the text from a given URL
-	 */
-	exports = module.exports = function(url) {
-	    if(getFromCache(url))
-	        return getFromCache(url)
-	
-	    var req = createXMLHTTPObject();
-	    if (req) {
-	        try {
-	            req.open('GET', url, false)
-	            req.send(null)
-	
-	            var headers = {}
-	            req.getAllResponseHeaders().split('\n').forEach(function(line) {
-	                var match = line.match(HEADER)
-	                if(match !== null) {
-	                    var name = match[1]
-	                    var value = match[2]
-	
-	                    headers[name] = value
-	                }
-	            })
-	
-	            var result = {text: req.responseText, headers: headers}
-	            setOnCache(url, result)
-	            return result
-	
-	        } catch (e) {
-	            throw new Error(e)
-	        }
-	    } else {
-	        throw new Error('Cant get XmlHttpRequest object')
-	    }
-	}
-	
-	var cache = {}
-	var getFromCache = function(url) {
-	    return cache[url]
-	}
-	var setOnCache = function(url, result) {
-	    cache[url] = result
-	}
-	
-	exports.cacheGet = function(fn) {
-	    getFromCache = fn
-	}
-	exports.cacheSet = function(fn) {
-	    setOnCache = fn
-	}
-	
-
-
-/***/ },
-/* 3 */
 /*!***************************************!*\
   !*** ../~/deadunit/basicFormatter.js ***!
   \***************************************/
@@ -595,7 +503,7 @@
 
 
 /***/ },
-/* 4 */
+/* 3 */
 /*!*******************************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/~/async-future/asyncFuture.js ***!
   \*******************************************************************/
@@ -603,7 +511,7 @@
 
 	/* Copyright (c) 2013 Billy Tetrud - Free to use for any purpose: MIT License*/
 	
-	var trimArgs = __webpack_require__(/*! trimArguments */ 14)
+	var trimArgs = __webpack_require__(/*! trimArguments */ 18)
 	
 	
 	module.exports = Future
@@ -870,7 +778,7 @@
 
 
 /***/ },
-/* 5 */
+/* 4 */
 /*!**************************************!*\
   !*** ../~/deadunit/~/proto/proto.js ***!
   \**************************************/
@@ -973,7 +881,7 @@
 	}
 
 /***/ },
-/* 6 */
+/* 5 */
 /*!*************************************************************!*\
   !*** ../~/webpack/~/node-libs-browser/~/process/browser.js ***!
   \*************************************************************/
@@ -1042,7 +950,143 @@
 
 
 /***/ },
+/* 6 */
+/*!*************************!*\
+  !*** ../~/ajax/ajax.js ***!
+  \*************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Future = __webpack_require__(/*! async-future */ 7)
+	
+	// returns the XHR function or equivalent for use with ajax
+	// memoizes the function for faster repeated use
+	var createXMLHTTPObject = function() {
+	    var versions = ["Msxml2.XMLHTTP",
+	                    "Msxml3.XMLHTTP",
+	                    "Microsoft.XMLHTTP",
+	                    "MSXML2.XmlHttp.6.0",
+	                    "MSXML2.XmlHttp.5.0",
+	                    "MSXML2.XmlHttp.4.0",
+	                    "MSXML2.XmlHttp.3.0",
+	                    "MSXML2.XmlHttp.2.0"
+	    ]
+	
+	    if(XMLHttpRequest !== undefined) {  // For non-IE browsers
+	        createXMLHTTPObject = function() {  // Use memoization to cache the factory
+	            return new XMLHttpRequest()
+	        }
+	        return createXMLHTTPObject()
+	
+	    } else { // IE
+	        for(var i=0, n=versions.length; i<n; i++) {
+	            try {
+	                var version = versions[i]
+	                var fn = function() {
+	                    return new ActiveXObject(version)
+	                }
+	                createXMLHTTPObject = fn   // Use memoization to cache the factory
+	                return createXMLHTTPObject()
+	
+	            } catch(e) {   }
+	        }
+	    }
+	
+	    throw new Error('Cant get XmlHttpRequest object')
+	}
+	
+	
+	
+	var HEADER = "([^\\s]+): (.*)"
+	
+	// returns the contents and headers from a given URL
+	exports = module.exports = function(url) {
+	    if(getFromCache(url))
+	        return getFromCache(url)
+	
+	    var futureResult = new Future
+	    setOnCache(url, futureResult)
+	
+	    var req = createXMLHTTPObject()
+	    req.onreadystatechange = function() {
+	        if( req.readyState === 4 ) {
+	            if( req.status === 200 ) {
+	                var headers = {}
+	                req.getAllResponseHeaders().split('\n').forEach(function(line) {
+	                    var match = line.match(HEADER)
+	                    if(match !== null) {
+	                        var name = match[1]
+	                        var value = match[2]
+	
+	                        headers[name] = value
+	                    }
+	                })
+	
+	                futureResult.return({text: req.responseText, headers: headers})
+	
+	            } else {
+	                var error = new Error('Error in request: Status '+req.status)
+	                error.status = req.status
+	                futureResult.throw(error)
+	            }
+	        }
+	    }
+	
+	    req.onerror = function(e) {
+	        futureResult.throw(e)
+	    }
+	
+	
+	    req.open('GET', url, true)
+	    req.send()
+	
+	    return futureResult
+	}
+	
+	var cache = {}
+	var getFromCache = function(url) {
+	    return cache[url]
+	}
+	var setOnCache = function(url, futureResponse) {
+	    cache[url] = futureResponse
+	}
+	
+	exports.cacheGet = function(fn) {
+	    getFromCache = fn
+	}
+	exports.cacheSet = function(fn) {
+	    setOnCache = fn
+	}
+
+/***/ },
 /* 7 */
+[35, 8],
+/* 8 */
+/*!*****************************************************************!*\
+  !*** ../~/ajax/~/async-future/~/trimArguments/trimArguments.js ***!
+  \*****************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// resolves varargs variable into more usable form
+	// args - should be a function arguments variable
+	// returns a javascript Array object of arguments that doesn't count trailing undefined values in the length
+	module.exports = function(theArguments) {
+	    var args = Array.prototype.slice.call(theArguments, 0)
+	
+	    var count = 0;
+	    for(var n=args.length-1; n>=0; n--) {
+	        if(args[n] === undefined)
+	            count++
+	    }
+	    args.splice(-0, count)
+	    return args
+	}
+
+/***/ },
+/* 9 */
+[35, 10],
+/* 10 */
+8,
+/* 11 */
 /*!*****************************************!*\
   !*** ../~/deadunit/deadunit.browser.js ***!
   \*****************************************/
@@ -1051,11 +1095,11 @@
 	"use strict";
 	/* Copyright (c) 2014 Billy Tetrud - Free to use for any purpose: MIT License*/
 	
-	var deadunitInternal = __webpack_require__(/*! ./deadunit.internal */ 8)
+	var deadunitInternal = __webpack_require__(/*! ./deadunit.internal */ 12)
 	var Future = __webpack_require__(/*! async-future */ 1)
 	
 	module.exports = deadunitInternal({
-	    deadunitCore: __webpack_require__(/*! deadunit-core/deadunitCore.browser */ 12),
+	    deadunitCore: __webpack_require__(/*! deadunit-core/deadunitCore.browser */ 16),
 	
 	    environmentSpecificMethods: function() {
 	        var red = 'rgb(200,30,30)'
@@ -1112,7 +1156,7 @@
 
 
 /***/ },
-/* 8 */
+/* 12 */
 /*!******************************************!*\
   !*** ../~/deadunit/deadunit.internal.js ***!
   \******************************************/
@@ -1125,10 +1169,10 @@
 	    var exports = {}
 	
 	    var deadunitCore = options.deadunitCore
-	    var proto = __webpack_require__(/*! proto */ 5)
+	    var proto = __webpack_require__(/*! proto */ 4)
 	
-	    var defaultFormats = __webpack_require__(/*! ./defaultFormats */ 9)
-	    exports.format = __webpack_require__(/*! ./basicFormatter */ 3)
+	    var defaultFormats = __webpack_require__(/*! ./defaultFormats */ 13)
+	    exports.format = __webpack_require__(/*! ./basicFormatter */ 2)
 	
 	    exports.error = deadunitCore.error
 	
@@ -1155,18 +1199,18 @@
 
 
 /***/ },
-/* 9 */
+/* 13 */
 /*!***************************************!*\
   !*** ../~/deadunit/defaultFormats.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(/*! util */ 28)
+	var util = __webpack_require__(/*! util */ 32)
 	
 	var Future = __webpack_require__(/*! async-future */ 1)
 	
-	var formatBasic = __webpack_require__(/*! ./basicFormatter */ 3)
-	var indent = __webpack_require__(/*! ./indent */ 10)
+	var formatBasic = __webpack_require__(/*! ./basicFormatter */ 2)
+	var indent = __webpack_require__(/*! ./indent */ 14)
 	
 	// unitTest is a deadunit-core UnitTest object
 	// if consoleColoring is true, the string will contain console color annotations
@@ -1642,7 +1686,7 @@
 
 
 /***/ },
-/* 10 */
+/* 14 */
 /*!*******************************!*\
   !*** ../~/deadunit/indent.js ***!
   \*******************************/
@@ -1655,29 +1699,9 @@
 	}
 
 /***/ },
-/* 11 */
-/*!*********************************************************************!*\
-  !*** ../~/deadunit/~/async-future/~/trimArguments/trimArguments.js ***!
-  \*********************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// resolves varargs variable into more usable form
-	// args - should be a function arguments variable
-	// returns a javascript Array object of arguments that doesn't count trailing undefined values in the length
-	module.exports = function(theArguments) {
-	    var args = Array.prototype.slice.call(theArguments, 0)
-	
-	    var count = 0;
-	    for(var n=args.length-1; n>=0; n--) {
-	        if(args[n] === undefined)
-	            count++
-	    }
-	    args.splice(-0, count)
-	    return args
-	}
-
-/***/ },
-/* 12 */
+/* 15 */
+8,
+/* 16 */
 /*!*************************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/deadunitCore.browser.js ***!
   \*************************************************************/
@@ -1686,9 +1710,9 @@
 	"use strict";
 	/* Copyright (c) 2014 Billy Tetrud - Free to use for any purpose: MIT License*/
 	
-	var deadunitCore = __webpack_require__(/*! ./deadunitCore */ 13)
-	var Future = __webpack_require__(/*! async-future */ 4)
-	var stackinfo = __webpack_require__(/*! stackinfo */ 17)
+	var deadunitCore = __webpack_require__(/*! ./deadunitCore */ 17)
+	var Future = __webpack_require__(/*! async-future */ 3)
+	var stackinfo = __webpack_require__(/*! stackinfo */ 21)
 	
 	module.exports = deadunitCore({
 	    initialize: function() {},
@@ -1799,7 +1823,7 @@
 	}
 
 /***/ },
-/* 13 */
+/* 17 */
 /*!*****************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/deadunitCore.js ***!
   \*****************************************************/
@@ -1808,12 +1832,12 @@
 	"use strict";
 	/* Copyright (c) 2013 Billy Tetrud - Free to use for any purpose: MIT License*/
 	
-	var path = __webpack_require__(/*! path */ 25)
+	var path = __webpack_require__(/*! path */ 29)
 	
-	var proto = __webpack_require__(/*! proto */ 5)
-	var Future = __webpack_require__(/*! async-future */ 4)
+	var proto = __webpack_require__(/*! proto */ 4)
+	var Future = __webpack_require__(/*! async-future */ 3)
 	
-	var processResults = __webpack_require__(/*! ./processResults */ 19)
+	var processResults = __webpack_require__(/*! ./processResults */ 23)
 	
 	// returns a module intended for a specific environment (that environment being described by the options)
 	// options can contain:
@@ -2305,9 +2329,9 @@
 	}
 
 /***/ },
-/* 14 */
-11,
-/* 15 */
+/* 18 */
+8,
+/* 19 */
 /*!******************************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/~/stackinfo/exceptionMode.js ***!
   \******************************************************************/
@@ -2365,7 +2389,7 @@
 
 
 /***/ },
-/* 16 */
+/* 20 */
 /*!*******************************************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/~/stackinfo/~/stacktrace-js/stacktrace.js ***!
   \*******************************************************************************/
@@ -2835,15 +2859,15 @@
 	}));
 
 /***/ },
-/* 17 */
+/* 21 */
 /*!**************************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/~/stackinfo/stackinfo.js ***!
   \**************************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var printStackTrace = __webpack_require__(/*! stacktrace-js */ 16)
-	var parsers = __webpack_require__(/*! ./tracelineParser */ 18)
-	var mode = __webpack_require__(/*! ./exceptionMode */ 15)
+	var printStackTrace = __webpack_require__(/*! stacktrace-js */ 20)
+	var parsers = __webpack_require__(/*! ./tracelineParser */ 22)
+	var mode = __webpack_require__(/*! ./exceptionMode */ 19)
 	
 	module.exports = function(ex) {
 	    if(parsers[mode] === undefined)
@@ -2900,7 +2924,7 @@
 	module.exports.mode = mode
 
 /***/ },
-/* 18 */
+/* 22 */
 /*!********************************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/~/stackinfo/tracelineParser.js ***!
   \********************************************************************/
@@ -3002,7 +3026,7 @@
 	var IE_STACK_LINE = new RegExp('^'+IE_FUNCTION_CALL+'$')
 
 /***/ },
-/* 19 */
+/* 23 */
 /*!*******************************************************!*\
   !*** ../~/deadunit/~/deadunit-core/processResults.js ***!
   \*******************************************************/
@@ -3134,7 +3158,7 @@
 	}
 
 /***/ },
-/* 20 */
+/* 24 */
 /*!*****************************************************!*\
   !*** ../~/raw-loader!./testResources/source.map.js ***!
   \*****************************************************/
@@ -3143,7 +3167,7 @@
 	module.exports = "I'm not really a source map"
 
 /***/ },
-/* 21 */
+/* 25 */
 /*!*************************************************************!*\
   !*** ../~/raw-loader!./testResources/sourceFileAtSymbol.js ***!
   \*************************************************************/
@@ -3152,7 +3176,7 @@
 	module.exports = "var someJavascript = {\r\n\r\n}\r\n\r\n//@ sourceMappingURL=testResources/source.map.js"
 
 /***/ },
-/* 22 */
+/* 26 */
 /*!***************************************************************!*\
   !*** ../~/raw-loader!./testResources/sourceFileHashSymbol.js ***!
   \***************************************************************/
@@ -3161,7 +3185,7 @@
 	module.exports = "var someJavascript = {\r\n\r\n}\r\n\r\n//# sourceMappingURL=testResources/source.map.js"
 
 /***/ },
-/* 23 */
+/* 27 */
 /*!*********************************************************************!*\
   !*** ../~/raw-loader!./testResources/sourceFile_SourceMapHeader.js ***!
   \*********************************************************************/
@@ -3170,9 +3194,9 @@
 	module.exports = "var someJavascript = {\r\n\r\n}"
 
 /***/ },
-/* 24 */
-23,
-/* 25 */
+/* 28 */
+27,
+/* 29 */
 /*!*******************************************************************!*\
   !*** ../~/webpack/~/node-libs-browser/~/path-browserify/index.js ***!
   \*******************************************************************/
@@ -3403,10 +3427,10 @@
 	    }
 	;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ../~/webpack/~/node-libs-browser/~/process/browser.js */ 6)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ../~/webpack/~/node-libs-browser/~/process/browser.js */ 5)))
 
 /***/ },
-/* 26 */
+/* 30 */
 /*!******************************************************************************!*\
   !*** ../~/webpack/~/node-libs-browser/~/util/~/inherits/inherits_browser.js ***!
   \******************************************************************************/
@@ -3438,7 +3462,7 @@
 
 
 /***/ },
-/* 27 */
+/* 31 */
 /*!**************************************************************************!*\
   !*** ../~/webpack/~/node-libs-browser/~/util/support/isBufferBrowser.js ***!
   \**************************************************************************/
@@ -3452,7 +3476,7 @@
 	}
 
 /***/ },
-/* 28 */
+/* 32 */
 /*!*******************************************************!*\
   !*** ../~/webpack/~/node-libs-browser/~/util/util.js ***!
   \*******************************************************/
@@ -3983,7 +4007,7 @@
 	}
 	exports.isPrimitive = isPrimitive;
 	
-	exports.isBuffer = __webpack_require__(/*! ./support/isBuffer */ 27);
+	exports.isBuffer = __webpack_require__(/*! ./support/isBuffer */ 31);
 	
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -4027,7 +4051,7 @@
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(/*! inherits */ 26);
+	exports.inherits = __webpack_require__(/*! inherits */ 30);
 	
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -4045,28 +4069,33 @@
 	  return Object.prototype.hasOwnProperty.call(obj, prop);
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ../~/webpack/~/node-libs-browser/~/process/browser.js */ 6)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ../~/webpack/~/node-libs-browser/~/process/browser.js */ 5)))
 
 /***/ },
-/* 29 */
+/* 33 */
 /*!*******************************!*\
   !*** ../sourcemap-locator.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var ajax = __webpack_require__(/*! ./ajax */ 2)
+	var ajax = __webpack_require__(/*! ajax */ 6)
+	var Future = __webpack_require__(/*! async-future */ 9)
 	
 	
 	exports.fromUrl = function(sourceUrl, toSource) {
 	    if(toSource === undefined) toSource = false
 	
-	    var response = ajax(sourceUrl, true)
-	    var sourcemapUrl = getSourceMapUrl(response.headers, response.text)
-	    if(toSource) {
-	        return ajax(sourcemapUrl).text
-	    } else {
-	        return sourcemapUrl
-	    }
+	    return ajax(sourceUrl, true).then(function(response) {
+	        var sourcemapUrl = getSourceMapUrl(response.headers, response.text)
+	        if(toSource) {
+	            return ajax(sourcemapUrl).then(function(response) {
+	                return Future(response.text)
+	            })
+	        } else {
+	            return Future(sourcemapUrl)
+	        }
+	    })
+	
 	}
 	
 	exports.fromSource = function(sourceText, toSource) {
@@ -4074,9 +4103,11 @@
 	
 	    var sourcemapUrl = getSourceMapUrl({}, sourceText)
 	    if(toSource) {
-	        return ajax(sourcemapUrl).text
+	        return ajax(sourcemapUrl).then(function(response) {
+	            return Future(response.text)
+	        })
 	    } else {
-	        return sourcemapUrl
+	        return Future(sourcemapUrl)
 	    }
 	}
 	
@@ -4105,43 +4136,381 @@
 	}
 
 /***/ },
-/* 30 */
+/* 34 */
 /*!******************!*\
   !*** ./tests.js ***!
   \******************/
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var find = __webpack_require__(/*! ../sourcemap-locator */ 29)
+	var find = __webpack_require__(/*! ../sourcemap-locator */ 33)
 	
 	var sourceMapFilePath = "testResources/source.map.js"
 	
 	module.exports = function(getFileContents) {
+	    var sourceMapFileContents = getFileContents(sourceMapFilePath)
+	
 	    return {
-	        fromUrl: function() {
-	            this.ok(find.fromUrl("testResources/sourceFileHashSymbol.js") === sourceMapFilePath)
-	            this.ok(find.fromUrl("testResources/sourceFileAtSymbol.js") === sourceMapFilePath)
-	            this.ok(find.fromUrl("testResources/sourceFile_SourceMapHeader.js") === sourceMapFilePath, find.fromUrl("testResources/sourceFile_SourceMapHeader.js"))
-	            this.ok(find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js") === sourceMapFilePath)
+	        fromUrl: function(t) {
+	            this.count(4)
+	
+	            find.fromUrl("testResources/sourceFileHashSymbol.js").then(function(sourcemapUrl) {
+	                t.ok(sourcemapUrl === sourceMapFilePath)
+	            }).done()
+	            find.fromUrl("testResources/sourceFileAtSymbol.js").then(function(sourcemapUrl) {
+	                t.ok(sourcemapUrl === sourceMapFilePath)
+	            }).done()
+	            find.fromUrl("testResources/sourceFile_SourceMapHeader.js").then(function(sourcemapUrl) {
+	                t.ok(sourcemapUrl === sourceMapFilePath)
+	            }).done()
+	            find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js").then(function(sourcemapUrl) {
+	                t.ok(sourcemapUrl === sourceMapFilePath)
+	            }).done()
 	        },
-	        fromUrlToSource: function() {
-	            var sourceMapFileContents = getFileContents(sourceMapFilePath)
-	            this.ok(find.fromUrl("testResources/sourceFileHashSymbol.js", true) === sourceMapFileContents, find.fromUrl("testResources/sourceFileHashSymbol.js", true))
-	            this.ok(find.fromUrl("testResources/sourceFileAtSymbol.js", true) === sourceMapFileContents)
-	            this.ok(find.fromUrl("testResources/sourceFile_SourceMapHeader.js", true) === sourceMapFileContents)
-	            this.ok(find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js", true) === sourceMapFileContents)
+	        fromUrlToSource: function(t) {
+	            this.count(4)
+	
+	            find.fromUrl("testResources/sourceFileHashSymbol.js", true).then(function(sourcemapContents) {
+	                t.ok(sourcemapContents === sourceMapFileContents)
+	            }).done()
+	            find.fromUrl("testResources/sourceFileAtSymbol.js", true).then(function(sourcemapContents) {
+	                t.ok(sourcemapContents === sourceMapFileContents)
+	            }).done()
+	            find.fromUrl("testResources/sourceFile_SourceMapHeader.js", true).then(function(sourcemapContents) {
+	                t.ok(sourcemapContents === sourceMapFileContents)
+	            }).done()
+	            find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js", true).then(function(sourcemapContents) {
+	                t.ok(sourcemapContents === sourceMapFileContents)
+	            }).done()
 	        },
-	        fromSource: function() {
-	            this.ok(find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")) === sourceMapFilePath, find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")))
-	            this.ok(find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js")) === sourceMapFilePath)
+	        fromSource: function(t) {
+	            this.count(2)
+	
+	            find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")).then(function(sourcemapUrl) {
+	                t.ok(sourcemapUrl === sourceMapFilePath, sourcemapUrl)
+	            }).done()
+	            find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js")).then(function(sourcemapUrl) {
+	                t.ok(sourcemapUrl === sourceMapFilePath, sourcemapUrl)
+	            }).done()
 	        },
-	        fromSourceToSource: function() {
-	            var sourceMapFileContents = getFileContents(sourceMapFilePath)
-	            this.ok(find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js"), true) === sourceMapFileContents)
-	            this.ok(find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js"), true) === sourceMapFileContents)
+	        fromSourceToSource: function(t) {
+	            this.count(2)
+	
+	            find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js"), true).then(function(sourcemapContents) {
+	                t.ok(sourcemapContents === sourceMapFileContents, sourcemapContents, sourceMapFileContents)
+	            }).done()
+	            find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js"), true).then(function(sourcemapContents) {
+	                t.ok(sourcemapContents === sourceMapFileContents, sourcemapContents, sourceMapFileContents)
+	            }).done()
 	        }
 	    }
 	}
+
+/***/ },
+/* 35 */
+/*!**********************************!*\
+  !*** template of 7 referencing  ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
+
+	/* Copyright (c) 2013 Billy Tetrud - Free to use for any purpose: MIT License*/
+	
+	var trimArgs = __webpack_require__(__webpack_module_template_argument_0__)
+	
+	
+	module.exports = Future
+	
+	Future.debug = false // switch this to true if you want ids and long stack traces
+	
+	var curId = 0         // for ids\
+	function Future(value) {
+		if(arguments.length > 0) {
+			var f = new Future()
+	        f.return(value)
+	        return f
+		} else {
+	        this.isResolved = false
+	        this.queue = []
+	        if(Future.debug) {
+	            curId++
+	            this.id = curId
+	        }
+	    }
+	}
+	
+	// static methods
+	
+	// has one parameter: either a bunch of futures, or a single array of futures
+	// returns a promise that resolves when one of them errors, or when all of them succeeds
+	Future.all = function() {
+	    if(arguments[0] instanceof Array) {
+	        var futures = arguments[0]
+	    } else {
+	        var futures = trimArgs(arguments)
+	    }
+	
+	    var f = new Future()
+	    var results = []
+	
+	    if(futures.length > 0) {
+	        var current = futures[0]
+	        futures.forEach(function(future, index) {
+	            current = current.then(function(v) {
+	                results[index] = v
+	                return futures[index+1]
+	            })
+	        })
+	
+	        //if
+	        current.catch(function(e) {
+	            f.throw(e)
+	        })
+	        // else
+	        current.then(function() {
+	            f.return(results)
+	        })
+	
+	
+	    } else {
+	        f.return(results)
+	    }
+	
+	    return f
+	}
+	
+	// either used like futureWrap(function(){ ... })(arg1,arg2,etc) or
+	//  futureWrap(object, 'methodName')(arg1,arg2,etc)
+	Future.wrap = function() {
+	    // function
+	    if(arguments.length === 1) {
+	        var fn = arguments[0]
+	        var object = undefined
+	
+	
+	    // object, function
+	    } else {
+	        var object = arguments[0]
+	        var fn = object[arguments[1]]
+	    }
+	
+	    return function() {
+	        var args = Array.prototype.slice.call(arguments)
+	        var future = new Future
+	        args.push(future.resolver())
+	        var me = this
+	        if(object) me = object
+	        fn.apply(me, args)
+	        return future
+	    }
+	}
+	
+	
+	// default
+	var unhandledErrorHandler = function(e) {
+	    setTimeout(function() {
+	        throw e
+	    },0)
+	}
+	
+	// setup unhandled error handler
+	// unhandled errors happen when done is called, and  then an exception is thrown from the future
+	Future.error = function(handler) {
+	    unhandledErrorHandler = handler
+	}
+	
+	// instance methods
+	
+	// returns a value for the future (can only be executed once)
+	// if there are callbacks waiting on this value, they are run in the next tick
+	    // (ie they aren't run immediately, allowing the current thread of execution to complete)
+	Future.prototype.return = function(v) {
+	    resolve(this, 'return', v)
+	}
+	Future.prototype.throw = function(e) {
+	    resolve(this, 'error', e)
+	}
+	
+	function setNext(that, future) {
+	    if(future !== undefined && !isLikeAFuture(future) )
+	        throw Error("Value returned from then or catch *not* a Future: "+future)
+	
+	    resolve(that, 'next', future)
+	}
+	
+	function wait(that, cb) {
+	    if(that.isResolved) {
+	        executeCallbacks(that, [cb])
+	    } else {
+	        that.queue.push(cb)
+	    }
+	}
+	
+	// duck typing to determine if something is or isn't a future
+	function isLikeAFuture(x) {
+	    return x.isResolved !== undefined && x.queue !== undefined && x.then !== undefined
+	}
+	
+	function waitOnResult(f, result, cb) {
+	    wait(result, function() {
+	        if(this.hasError) {
+	            f.throw(this.error)
+	        } else if(this.hasNext) {
+	            waitOnResult(f, this.next, cb)
+	        } else {
+	            try {
+	                setNext(f, cb(this.result))
+	            } catch(e) {
+	                f.throw(e)
+	            }
+	        }
+	    })
+	}
+	
+	
+	// cb takes one parameter - the value returned
+	// cb can return a Future, in which case the result of that Future is passed to next-in-chain
+	Future.prototype.then = function(cb) {
+	    var f = new Future
+	    wait(this, function() {
+	        if(this.hasError)
+	            f.throw(this.error)
+	        else if(this.hasNext)
+	            waitOnResult(f, this.next, cb)
+	        else {
+	            try {
+	                setNext(f, cb(this.result))
+	            } catch(e) {
+	                f.throw(e)
+	            }
+	        }
+	    })
+	    return f
+	}
+	// cb takes one parameter - the error caught
+	// cb can return a Future, in which case the result of that Future is passed to next-in-chain
+	Future.prototype.catch = function(cb) {
+	    var f = new Future
+	    wait(this, function() {
+	        if(this.hasError) {
+	            try {
+	                setNext(f, cb(this.error))
+	            } catch(e) {
+	                f.throw(e)
+	            }
+	        } else if(this.hasNext) {
+	            this.next.then(function(v) {
+	                f.return(v)
+	            }).catch(function(e) {
+	                setNext(f, cb(e))
+	            })
+	        } else {
+	            f.return(this.result)
+	        }
+	    })
+	    return f
+	}
+	// cb takes no parameters
+	// callback's return value is ignored, but thrown exceptions propogate normally
+	Future.prototype.finally = function(cb) {
+	    var f = new Future
+	    wait(this, function() {
+	        try {
+	            if(this.hasNext) {
+	                this.next.then(function(v) {
+	                    var x = cb()
+	                    f.return(v)
+	                    return x
+	                }).catch(function(e) {
+	                    var x = cb()
+	                    f.throw(e)
+	                    return x
+	                }).done()
+	            } else if(this.hasError) {
+	                Future(true).then(function() {
+	                    return cb()
+	                }).then(function() {
+	                    f.throw(this.error)
+	                }).catch(function(e) {
+	                    f.throw(e)
+	                }).done()
+	
+	            } else  {
+	                Future(true).then(function() {
+	                    return cb()
+	                }).then(function() {
+	                    f.return(this.result)
+	                }).catch(function(e) {
+	                    f.throw(e)
+	                }).done()
+	            }
+	        } catch(e) {
+	            f.throw(e)
+	        }
+	    })
+	    return f
+	}
+	
+	// all unused futures should end with this (e.g. most then-chains)
+	// detatches the future so any propogated exception is thrown (so the exception isn't silently lost)
+	Future.prototype.done = function() {
+	    wait(this, function() {
+	        if(this.hasError) {
+	            unhandledErrorHandler(this.error)
+	        } else if(this.hasNext) {
+	            this.next.catch(function(e) {
+	                unhandledErrorHandler(e)
+	            })
+	        }
+	    })
+	}
+	
+	
+	
+	Future.prototype.resolver = function() {
+	    var me = this
+	
+	    return function(e,v) {
+	        if(e) { // error argument
+	            me.throw(e)
+	        } else {
+	            me.return(v)
+	        }
+	    }
+	}
+	
+	Future.prototype.resolved = function() {
+	    return this.isResolved
+	}
+	
+	
+	function resolve(that, type, value) {
+	    if(that.isResolved)
+	        throw Error("Future resolved more than once! Resolution: "+value)
+	
+	    that.isResolved = true
+	    that.hasError = type === 'error'
+	    that.hasNext = type === 'next' && value !== undefined
+	
+	    if(that.hasError)
+	        that.error = value
+	    else if(that.hasNext)
+	        that.next = value
+	    else
+	        that.result = value
+	
+	    executeCallbacks(that, that.queue)
+	}
+	
+	function executeCallbacks(that, callbacks) {
+	    if(callbacks.length > 0) {
+	        setTimeout(function() {
+	            callbacks.forEach(function(cb) {
+	                cb.apply(that)
+	            })
+	        },0)
+	    }
+	}
+
 
 /***/ }
 /******/ ])))

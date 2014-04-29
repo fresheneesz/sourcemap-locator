@@ -1,6 +1,5 @@
 var unit = require("deadunit/deadunit.browser")
 var getTests = require("./tests")
-var ajax = require('../ajax')
 
 unit.test(function() {
     this.count(4)

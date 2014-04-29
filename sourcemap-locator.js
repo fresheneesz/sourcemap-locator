@@ -1,16 +1,21 @@
-var ajax = require('./ajax')
+var ajax = require('ajax')
+var Future = require("async-future")
 
 
 exports.fromUrl = function(sourceUrl, toSource) {
     if(toSource === undefined) toSource = false
 
-    var response = ajax(sourceUrl, true)
-    var sourcemapUrl = getSourceMapUrl(response.headers, response.text)
-    if(toSource) {
-        return ajax(sourcemapUrl).text
-    } else {
-        return sourcemapUrl
-    }
+    return ajax(sourceUrl, true).then(function(response) {
+        var sourcemapUrl = getSourceMapUrl(response.headers, response.text)
+        if(toSource) {
+            return ajax(sourcemapUrl).then(function(response) {
+                return Future(response.text)
+            })
+        } else {
+            return Future(sourcemapUrl)
+        }
+    })
+
 }
 
 exports.fromSource = function(sourceText, toSource) {
@@ -18,9 +23,11 @@ exports.fromSource = function(sourceText, toSource) {
 
     var sourcemapUrl = getSourceMapUrl({}, sourceText)
     if(toSource) {
-        return ajax(sourcemapUrl).text
+        return ajax(sourcemapUrl).then(function(response) {
+            return Future(response.text)
+        })
     } else {
-        return sourcemapUrl
+        return Future(sourcemapUrl)
     }
 }
 

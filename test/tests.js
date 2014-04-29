@@ -4,28 +4,60 @@ var find = require('../sourcemap-locator')
 var sourceMapFilePath = "testResources/source.map.js"
 
 module.exports = function(getFileContents) {
+    var sourceMapFileContents = getFileContents(sourceMapFilePath)
+
     return {
-        fromUrl: function() {
-            this.ok(find.fromUrl("testResources/sourceFileHashSymbol.js") === sourceMapFilePath)
-            this.ok(find.fromUrl("testResources/sourceFileAtSymbol.js") === sourceMapFilePath)
-            this.ok(find.fromUrl("testResources/sourceFile_SourceMapHeader.js") === sourceMapFilePath, find.fromUrl("testResources/sourceFile_SourceMapHeader.js"))
-            this.ok(find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js") === sourceMapFilePath)
+        fromUrl: function(t) {
+            this.count(4)
+
+            find.fromUrl("testResources/sourceFileHashSymbol.js").then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === sourceMapFilePath)
+            }).done()
+            find.fromUrl("testResources/sourceFileAtSymbol.js").then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === sourceMapFilePath)
+            }).done()
+            find.fromUrl("testResources/sourceFile_SourceMapHeader.js").then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === sourceMapFilePath)
+            }).done()
+            find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js").then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === sourceMapFilePath)
+            }).done()
         },
-        fromUrlToSource: function() {
-            var sourceMapFileContents = getFileContents(sourceMapFilePath)
-            this.ok(find.fromUrl("testResources/sourceFileHashSymbol.js", true) === sourceMapFileContents, find.fromUrl("testResources/sourceFileHashSymbol.js", true))
-            this.ok(find.fromUrl("testResources/sourceFileAtSymbol.js", true) === sourceMapFileContents)
-            this.ok(find.fromUrl("testResources/sourceFile_SourceMapHeader.js", true) === sourceMapFileContents)
-            this.ok(find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js", true) === sourceMapFileContents)
+        fromUrlToSource: function(t) {
+            this.count(4)
+
+            find.fromUrl("testResources/sourceFileHashSymbol.js", true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === sourceMapFileContents)
+            }).done()
+            find.fromUrl("testResources/sourceFileAtSymbol.js", true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === sourceMapFileContents)
+            }).done()
+            find.fromUrl("testResources/sourceFile_SourceMapHeader.js", true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === sourceMapFileContents)
+            }).done()
+            find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js", true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === sourceMapFileContents)
+            }).done()
         },
-        fromSource: function() {
-            this.ok(find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")) === sourceMapFilePath, find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")))
-            this.ok(find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js")) === sourceMapFilePath)
+        fromSource: function(t) {
+            this.count(2)
+
+            find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")).then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === sourceMapFilePath, sourcemapUrl)
+            }).done()
+            find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js")).then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === sourceMapFilePath, sourcemapUrl)
+            }).done()
         },
-        fromSourceToSource: function() {
-            var sourceMapFileContents = getFileContents(sourceMapFilePath)
-            this.ok(find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js"), true) === sourceMapFileContents)
-            this.ok(find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js"), true) === sourceMapFileContents)
+        fromSourceToSource: function(t) {
+            this.count(2)
+
+            find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js"), true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === sourceMapFileContents, sourcemapContents, sourceMapFileContents)
+            }).done()
+            find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js"), true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === sourceMapFileContents, sourcemapContents, sourceMapFileContents)
+            }).done()
         }
     }
 }

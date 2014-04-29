@@ -1,14 +1,15 @@
 `sourcemap-locator`
 ========
 
-From a browser, finds the sourcemap url or the sourcemap file itself, given the URL (or source) of the original source file.
+From a browser, finds the sourcemap url or the sourcemap file itself, given the URL (or source) of the original source file. Uses [async-futures](https://github.com/fresheneesz/asyncFuture).
 
 Example
 ======
 
 ```javascript
-var findSourcemap = require('sourcemap-locator')
-var sourcemapUrl = findSourcemap.fromUrl('originalSourceFile.js')
+findSourcemap.fromUrl('originalSourceFile.js').then(function(sourcemapUrl) {
+    // do something with the sourcemapUrl
+}).done()
 ```
 
 Install
@@ -25,13 +26,13 @@ Usage
 var findSourcemap = require('sourcemap-locator') // use webpack (recommended) or browserify
 ```
 
-These return the sourcemap URL, or undefined if it isn't found:
+These return a future of the sourcemap URL, or future undefined if it isn't found:
 ```javascript
 findSourcemap.fromUrl(originalSourceUrl)
 findSourcemap.fromSource(originalSourceText) // works in node.js (the other ones don't)
 ```
 
-These return the text of the sourcemap file, or undefined if it isn't found:
+These return a future of the text of the sourcemap file, or future undefined if it isn't found:
 ```javascript
 findSourcemap.fromUrl(originalSourceUrl, true)
 findSourcemap.fromSource(originalSourceUrl, true)
@@ -42,8 +43,8 @@ These override cache maintainance functions if you have a separate cache of file
 findSourcemap.cacheGet(function(url) {
    // get the url from your own cache
 })
-findSourcemap.cacheSet(function(url, content) {
-   // set the content downloaded from a url for your own cache
+findSourcemap.cacheSet(function(url, futureResponse) {
+   // set the content downloaded from a url for your own cache using futureResponse
 })
 ```
 
@@ -80,6 +81,7 @@ How to submit pull requests:
 Change Log
 =========
 
+* 2.0.0 - changing to asynchronous file loading
 * 1.0.0 - first release
 
 License
