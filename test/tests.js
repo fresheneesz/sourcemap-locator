@@ -8,7 +8,7 @@ module.exports = function(getFileContents) {
 
     return {
         fromUrl: function(t) {
-            this.count(4)
+            this.count(5)
 
             find.fromUrl("testResources/sourceFileHashSymbol.js").then(function(sourcemapUrl) {
                 t.ok(sourcemapUrl === sourceMapFilePath)
@@ -22,9 +22,14 @@ module.exports = function(getFileContents) {
             find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js").then(function(sourcemapUrl) {
                 t.ok(sourcemapUrl === sourceMapFilePath)
             }).done()
+
+            find.fromUrl("testResources/noSourceMap.js").then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === undefined)
+            }).done()
+
         },
         fromUrlToSource: function(t) {
-            this.count(4)
+            this.count(5)
 
             find.fromUrl("testResources/sourceFileHashSymbol.js", true).then(function(sourcemapContents) {
                 t.ok(sourcemapContents === sourceMapFileContents)
@@ -38,9 +43,13 @@ module.exports = function(getFileContents) {
             find.fromUrl("testResources/sourceFile_X-SourceMapHeader.js", true).then(function(sourcemapContents) {
                 t.ok(sourcemapContents === sourceMapFileContents)
             }).done()
+
+            find.fromUrl("testResources/noSourceMap.js", true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === undefined, sourcemapContents)
+            }).done()
         },
         fromSource: function(t) {
-            this.count(2)
+            this.count(3)
 
             find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js")).then(function(sourcemapUrl) {
                 t.ok(sourcemapUrl === sourceMapFilePath, sourcemapUrl)
@@ -48,15 +57,23 @@ module.exports = function(getFileContents) {
             find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js")).then(function(sourcemapUrl) {
                 t.ok(sourcemapUrl === sourceMapFilePath, sourcemapUrl)
             }).done()
+
+            find.fromSource(getFileContents("testResources/noSourceMap.js")).then(function(sourcemapUrl) {
+                t.ok(sourcemapUrl === undefined, sourcemapUrl)
+            }).done()
         },
         fromSourceToSource: function(t) {
-            this.count(2)
+            this.count(3)
 
             find.fromSource(getFileContents("testResources/sourceFileHashSymbol.js"), true).then(function(sourcemapContents) {
                 t.ok(sourcemapContents === sourceMapFileContents, sourcemapContents, sourceMapFileContents)
             }).done()
             find.fromSource(getFileContents("testResources/sourceFileAtSymbol.js"), true).then(function(sourcemapContents) {
                 t.ok(sourcemapContents === sourceMapFileContents, sourcemapContents, sourceMapFileContents)
+            }).done()
+
+            find.fromSource(getFileContents("testResources/noSourceMap.js"), true).then(function(sourcemapContents) {
+                t.ok(sourcemapContents === undefined, sourcemapContents)
             }).done()
         }
     }

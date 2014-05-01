@@ -12,21 +12,18 @@ unit.test(function() {
 
 
 function getFileContents(path) {
-    if(path === "testResources/sourceFileHashSymbol.js") {
-        return require("raw!./testResources/sourceFileHashSymbol.js")
+    var knownFiles = {
+        "testResources/sourceFileHashSymbol.js": require("raw!./testResources/sourceFileHashSymbol.js"),
+        "testResources/sourceFileAtSymbol.js": require("raw!./testResources/sourceFileAtSymbol.js"),
+        "testResources/sourceFile_SourceMapHeader.js": require("raw!./testResources/sourceFile_SourceMapHeader.js"),
+        "testResources/sourceFile_X-SourceMapHeader.js": require("raw!./testResources/sourceFile_X-SourceMapHeader.js"),
+        "testResources/source.map.js": require("raw!./testResources/source.map.js"),
+        "testResources/noSourceMap.js": require("raw!./testResources/noSourceMap.js")
+    }
 
-    } else if(path === "testResources/sourceFileAtSymbol.js") {
-        return require("raw!./testResources/sourceFileAtSymbol.js")
-
-    } else if(path === "testResources/sourceFile_SourceMapHeader.js") {
-        return require("raw!./testResources/sourceFile_SourceMapHeader.js")
-
-    } else if(path === "testResources/sourceFile_X-SourceMapHeader.js") {
-        return require("raw!./testResources/sourceFile_X-SourceMapHeader.js")
-
-    } else if(path === "testResources/source.map.js") {
-        return require("raw!./testResources/source.map.js")
-
+    var result = knownFiles[path]
+    if(result !== undefined) {
+        return result
     } else {
         throw new Error("Didnt expect you'd be needing "+path)
     }

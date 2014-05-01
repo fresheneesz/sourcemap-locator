@@ -7,7 +7,9 @@ exports.fromUrl = function(sourceUrl, toSource) {
 
     return ajax(sourceUrl, true).then(function(response) {
         var sourcemapUrl = getSourceMapUrl(response.headers, response.text)
-        if(toSource) {
+        if(sourcemapUrl === undefined) {
+            return Future(undefined)
+        } else if(toSource) {
             return ajax(sourcemapUrl).then(function(response) {
                 return Future(response.text)
             })
@@ -22,7 +24,9 @@ exports.fromSource = function(sourceText, toSource) {
     if(toSource === undefined) toSource = false
 
     var sourcemapUrl = getSourceMapUrl({}, sourceText)
-    if(toSource) {
+    if(sourcemapUrl === undefined) {
+            return Future(undefined)
+    } else if(toSource) {
         return ajax(sourcemapUrl).then(function(response) {
             return Future(response.text)
         })

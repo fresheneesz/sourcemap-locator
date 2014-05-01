@@ -39,6 +39,7 @@ function startTestServer() {
             }
 
         } catch(e) {
+            res.writeHead(400)
             console.log(e.stack)
         } finally {
             res.end()
