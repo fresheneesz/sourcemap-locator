@@ -18,6 +18,7 @@ function getFileContents(path) {
         "testResources/sourceFile_SourceMapHeader.js": require("raw!./testResources/sourceFile_SourceMapHeader.js"),
         "testResources/sourceFile_X-SourceMapHeader.js": require("raw!./testResources/sourceFile_X-SourceMapHeader.js"),
         "testResources/source.map.js": require("raw!./testResources/source.map.js"),
+        "testResources/sourceFileDataUrl.js": require("raw!./testResources/sourceFileDataUrl.js"),
         "testResources/noSourceMap.js": require("raw!./testResources/noSourceMap.js")
     }
 

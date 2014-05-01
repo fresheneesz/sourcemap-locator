@@ -1,35 +1,31 @@
 var ajax = require('ajax')
 var Future = require("async-future")
-
+var decodeDataUrl = require("./decodeDataUrl")
 
 exports.fromUrl = function(sourceUrl, toSource) {
-    if(toSource === undefined) toSource = false
-
     return ajax(sourceUrl, true).then(function(response) {
-        var sourcemapUrl = getSourceMapUrl(response.headers, response.text)
-        if(sourcemapUrl === undefined) {
-            return Future(undefined)
-        } else if(toSource) {
-            return ajax(sourcemapUrl).then(function(response) {
-                return Future(response.text)
-            })
-        } else {
-            return Future(sourcemapUrl)
-        }
+        return fromSourceOrHeaders(response.headers, response.text, toSource)
     })
-
 }
 
 exports.fromSource = function(sourceText, toSource) {
+    return fromSourceOrHeaders({}, sourceText, toSource)
+}
+
+function fromSourceOrHeaders(headers, sourceText, toSource) {
     if(toSource === undefined) toSource = false
 
-    var sourcemapUrl = getSourceMapUrl({}, sourceText)
+    var sourcemapUrl = getSourceMapUrl(headers, sourceText)
     if(sourcemapUrl === undefined) {
-            return Future(undefined)
+        return Future(undefined)
     } else if(toSource) {
-        return ajax(sourcemapUrl).then(function(response) {
-            return Future(response.text)
-        })
+        if(sourcemapUrl.indexOf('data:') === 0) {
+            return Future(decodeDataUrl(sourcemapUrl))
+        } else {
+            return ajax(sourcemapUrl).then(function(response) {
+                return Future(response.text)
+            })
+        }
     } else {
         return Future(sourcemapUrl)
     }

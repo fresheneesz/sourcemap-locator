@@ -1,5 +1,5 @@
 {"name":"sourcemap-locator",
- "version":"2.1.0",
+ "version":"2.1.1",
  "main":"sourcemap-locator.js",
  "description": "From a browser, finds the sourcemap url or the sourcemap file itself, given the URL (or source) of the original source file.",
  "keywords": ["sourcemap", "source", "map", "javascript"],
