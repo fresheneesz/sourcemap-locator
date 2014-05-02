@@ -1,5 +1,5 @@
 {"name":"sourcemap-locator",
- "version":"2.1.2",
+ "version":"2.1.3",
  "main":"sourcemap-locator.js",
  "description": "From a browser, finds the sourcemap url or the sourcemap file itself, given the URL (or source) of the original source file.",
  "keywords": ["sourcemap", "source", "map", "javascript"],
@@ -8,7 +8,7 @@
    "url": "https://github.com/fresheneesz/sourcemap-finder"
  },
  "dependencies": {
-   "ajax":"https://github.com/fresheneesz/ajax/archive/4b67b4ef7075831667b2f48bcab7945f5f85cb01.tar.gz",
+   "ajax":"https://github.com/fresheneesz/ajax/archive/c0f12d10544a247bfa58b15e9535ee2ffd5787d1.tar.gz",
    "async-future":"0.1.18"
  },
  "devDependencies": {

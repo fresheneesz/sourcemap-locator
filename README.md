@@ -81,6 +81,7 @@ How to submit pull requests:
 Change Log
 =========
 
+* 2.1.3 - updating ajax
 * 2.1.2 - updating async-future
 * 2.1.1 - supporting data urls
 * 2.1.0 - properly handling files that don't have a sourcemap (duh)
